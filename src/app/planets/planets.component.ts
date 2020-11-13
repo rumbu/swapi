@@ -5,6 +5,12 @@ import { Planet } from '../models/planet.model';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
+const UNKNOWN_VALUE = -Infinity;
+
+function formatIfNonEmpty(entity, k, formatter: (value: string) => string) {
+    return 'unknown' === entity[k] ? (entity[k] = UNKNOWN_VALUE, '—') : formatter(entity[k]);
+}
+
 @Component({
   selector: 'app-planets',
   templateUrl: './planets.component.html',
@@ -30,15 +36,15 @@ export class PlanetsComponent implements OnInit {
 
   planetMapper(entity: Planet) {
     return {
-      ...entity,
-
       ...this.numberedColumns.reduce((c, k) => {
-        return {...c, [`_${k}`]: formatNumber(entity[k], 'en')};
+        return {...c, [`_${k}`]: formatIfNonEmpty(entity, k, (v) => formatNumber(parseFloat(v), 'en'))};
       }, {}),
 
       ...this.percentColumns.reduce((c, k) => {
-        return {...c, [`_${k}`]: formatPercent(entity[k], 'en')};
-      }, {})
+        return {...c, [`_${k}`]: formatIfNonEmpty(entity, k, (v) => formatPercent(parseFloat(v) * .01, 'en'))};
+      }, {}),
+
+      ...entity,
     };
   }
 }

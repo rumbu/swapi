@@ -1,4 +1,13 @@
 th.mat-header-cell,
 td.mat-cell {
-  padding-right: 5px;
+  line-height: 1.2em;
+  padding-right: 8px;
+}
+
+tr.mat-row {
+  height: 58px;
+}
+
+.mat-column-gravity {
+  width: 6em;
 }
