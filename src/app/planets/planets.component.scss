@@ -9,11 +9,15 @@ td.mat-cell {
 }
 
 tr.mat-row {
-  height: 58px;
+  height: 64px;
+
+  &:nth-child(odd) {
+    background-color: #f5f5ff;
+  }
 }
 
 .mat-column-gravity {
-  width: 6em;
+  width: 105px;
 }
 
 .app-spinner {
