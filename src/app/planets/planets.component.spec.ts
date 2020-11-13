@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SwapiService } from '../swapi.service';
 import { of } from 'rxjs';
 
@@ -17,7 +18,7 @@ describe('PlanetsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PlanetsComponent ],
-      imports: [MatButtonModule, MatIconModule, MatTableModule],
+      imports: [MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatTableModule],
       providers: [{
         provide: SwapiService,
         useValue: swapiServiceMock

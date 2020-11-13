@@ -23,25 +23,35 @@ export class PlanetsComponent implements OnInit {
   displayedColumns = ['name', 'climate', 'diameter', 'gravity', 'orbital_period', 'population', 'rotation_period', 'surface_water', 'terrain'];
   numberedColumns = ['diameter', 'orbital_period', 'population', 'rotation_period'];
   percentColumns = ['surface_water'];
+  isLoading = false;
 
   constructor(public swapi: SwapiService) {}
 
   ngOnInit(): void {
+    this.loadPlanets();
+  }
+
+  loadPlanets(): void {
+    this.isLoading = true;
+
     this.swapi.getPlanets().subscribe(
       (planets) => {
         this.planets.data = planets.map((e) => this.planetMapper(e));
         this.planets.sort = this.sort;
-      });
+      },
+      (e) => console.log(e),
+      () => this.isLoading = false
+    );
   }
 
   planetMapper(entity: Planet) {
     return {
       ...this.numberedColumns.reduce((c, k) => {
-        return {...c, [`_${k}`]: formatIfNonEmpty(entity, k, (v) => formatNumber(parseFloat(v), 'en'))};
+        return {...c, [`${k}_formatted`]: formatIfNonEmpty(entity, k, (v) => formatNumber(parseFloat(v), 'en'))};
       }, {}),
 
       ...this.percentColumns.reduce((c, k) => {
-        return {...c, [`_${k}`]: formatIfNonEmpty(entity, k, (v) => formatPercent(parseFloat(v) * .01, 'en'))};
+        return {...c, [`${k}_formatted`]: formatIfNonEmpty(entity, k, (v) => formatPercent(parseFloat(v) * .01, 'en'))};
       }, {}),
 
       ...entity,
