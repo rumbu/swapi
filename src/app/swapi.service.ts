@@ -18,7 +18,7 @@ export class SwapiService {
   }
 
   _get(endpoint: string) {
-    return this.http.get(`${API_URL}${endpoint}`)
+    return this.http.get(`${API_URL}${endpoint}/`)
       .pipe(
           first(),
           map((r: ApiResult) => r.results)
