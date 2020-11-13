@@ -15,3 +15,10 @@ $custom-typography: mat-typography-config(
   min-height: calc(100vh - 18em);
   padding: 2em 32px;
 }
+
+.app-error {
+  align-items: center;
+  display: flex;
+  height: 100px;
+  justify-content: center;
+}

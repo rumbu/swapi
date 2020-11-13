@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { formatNumber, formatPercent } from '@angular/common';
+import { finalize } from 'rxjs/operators';
 import { SwapiService } from '../swapi.service';
 import { Planet } from '../models/planet.model';
 import { MatSort } from '@angular/material/sort';
@@ -24,6 +25,7 @@ export class PlanetsComponent implements OnInit {
   numberedColumns = ['diameter', 'orbital_period', 'population', 'rotation_period'];
   percentColumns = ['surface_water'];
   isLoading = false;
+  hasError = false;
 
   constructor(public swapi: SwapiService) {}
 
@@ -33,14 +35,18 @@ export class PlanetsComponent implements OnInit {
 
   loadPlanets(): void {
     this.isLoading = true;
+    this.hasError = false;
 
-    this.swapi.getPlanets().subscribe(
+    this.swapi.getPlanets()
+    .pipe(
+      finalize(() => this.isLoading = false)
+    )
+    .subscribe(
       (planets) => {
         this.planets.data = planets.map((e) => this.planetMapper(e));
         this.planets.sort = this.sort;
       },
-      (e) => console.log(e),
-      () => this.isLoading = false
+      () => this.hasError = true
     );
   }
 
